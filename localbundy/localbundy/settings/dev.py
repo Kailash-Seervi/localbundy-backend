@@ -1,4 +1,6 @@
 from .base import *
+import os
+from decouple import config
 
 DATABASES = {
     'default': {
@@ -10,3 +12,12 @@ DATABASES = {
         'PORT': '3306',
     }
 }
+
+EMAIL_USE_TLS = True
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_HOST_USER = config('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD')
+
+FRONTEND_URL= config("FRONTEND_URL")
+FRONTEND_EMAIL_VERIFY_URL= config("FRONTEND_EMAIL_VERIFY_URL")
