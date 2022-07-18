@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework_simplejwt',
     'corsheaders',
+    'storages',
     'authentication',
     'microblog',
 ]
@@ -169,3 +170,14 @@ FRONTEND_EMAIL_VERIFY_URL= config("FRONTEND_EMAIL_VERIFY_URL")
 # CORS
 CORS_ORIGIN_ALLOW_ALL = True
 ALLOWED_HOSTS = ['localbundy-backend.herokuapp.com', '127.0.0.1', 'localhost']
+
+# S3 BUCKET
+AWS_QUERYSTRING_AUTH = False
+
+AWS_ACCESS_KEY_ID = 'AKIARZOHMWI7YFD2HAQE'
+AWS_SECRET_ACCESS_KEY = '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'
+AWS_STORAGE_BUCKET_NAME = 'localbundy-s3-serve'
+
+AWS_S3_FILE_OVERWRITE=False
+AWS_DEFAULT_ACL=None
+DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
