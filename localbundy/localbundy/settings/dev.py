@@ -2,14 +2,21 @@ from .base import *
 import os
 from decouple import config
 
+DB_HOST = config('DB_HOST')
+DB_PORT = config('DB_PORT')
+DB_PASSWORD = config('DB_PASSWORD')
+DB_USER = config('DB_USER')
+DB_ENGINE = config('DB_ENGINE')
+DB_NAME = config('DB_NAME')
+
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'localbundytest',
-        'USER': 'admin',
-        'PASSWORD': 'Password@123',
-        'HOST': 'localhost',
-        'PORT': '3306',
+        'ENGINE': DB_ENGINE,
+        'NAME': DB_NAME,
+        'USER': DB_USER,
+        'PASSWORD': DB_PASSWORD,
+        'HOST': DB_HOST,
+        'PORT': DB_PORT,
     }
 }
 
@@ -24,4 +31,4 @@ FRONTEND_EMAIL_VERIFY_URL= config("FRONTEND_EMAIL_VERIFY_URL")
  
 # CORS
 CORS_ORIGIN_ALLOW_ALL = True
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = ['localbundy-backend.herokuapp.com', '127.0.0.1', 'localhost']
