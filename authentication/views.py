@@ -18,7 +18,7 @@ class Signup(APIView):
     def post(self, request):
         email = request.data.get('email')
         password = request.data.get('password')
-        name = request.data.get('name',None)
+        name = request.data.get('username',None)
 
         user  = User.objects.filter(email=email)
         if user.exists():
