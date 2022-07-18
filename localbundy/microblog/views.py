@@ -21,14 +21,17 @@ class CreateBlogPostAPI(APIView):
         user = User.objects.get(email = request.user)
         data = request.data.copy()
         data['author'] = user.id
+        if not data.get('body',) and not data.get('image'):
+            return Response({"success":False,"message":"Can't create an empty blog"},status=status.HTTP_400_BAD_REQUEST)
+
         serializer = PostSerializer(data=data, context={'request':request})
         if serializer.is_valid():
             serializer.save()
             id = serializer.data.get('id')
             post = Post.objects.get(id=id)
             view_serializer = PostListViewSerializer(post, context={'request':request})
-            return Response(view_serializer.data)
-        return Response(serializer.errors)
+            return Response({"success":True,"message":"Created successfully!","data":view_serializer.data})
+        return Response({"success":False,"message":"Blog creation error!","data":serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
 
 class BlogPostDetailAPI(APIView):
     '''
@@ -110,18 +113,6 @@ class AddPostViewAPI(APIView):
 
         print("request.session.session_key",request.session.session_key)
         print("request.META['REMOTE_ADDR']", request.META['REMOTE_ADDR'])
-        # is_liked = post.views.filter(id = user.id)
-
-        # if is_liked:
-        #     post.loves.remove(user.id)
-        #     message = "Love added!"
-        # else:
-        #     post.loves.add(user.id)
-        #     message = "Love removed"
-        # post.save()
-
-        # serializer = PostSerializer(post, context={'request':request})
-        # return Response({"success": True, "message":message, "data":serializer.data})
         return Response()
 
 class BlogPostList(ListAPIView):

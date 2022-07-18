@@ -29,7 +29,7 @@ class PostListViewSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Post
-        fields = ["id", "author", "likes", "loves", "views", "created_at", "image"]
+        fields = ["id", "author", "body", "likes", "loves", "views", "created_at", "image"]
 
     def get_image(self, post):
         request = self.context.get('request')

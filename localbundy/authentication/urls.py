@@ -13,6 +13,8 @@ urlpatterns = [
     path('api/token/', jwt_views.TokenObtainPairView.as_view(serializer_class=customTokenObtainPairSerializer)),
     path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
     path('signup/', Signup.as_view(), name='signup'),
-    path('verify-email/', VerifyEmail.as_view(), name='verify_email'),
+    path('verify-email/<str:token>/', VerifyEmail.as_view(), name='verify_email'),
+    path('user/', UserAPI.as_view(), name='load_user'),
+    
     
 ]
