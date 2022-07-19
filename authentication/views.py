@@ -49,8 +49,8 @@ class Signup(APIView):
 
 class VerifyEmail(APIView):
 
-    def get(self, request, token):
-        # token = request.data.query_params.get('token')
+    def post(self, request):
+        token = request.data.get('token','')
         try:
             payload = jwt.decode(token, settings.SECRET_KEY, algorithms=["HS256", "HS384", "HS512"])
             print(payload)
@@ -62,8 +62,37 @@ class VerifyEmail(APIView):
         except jwt.ExpiredSignatureError as identifier:
             return Response({"success": False, "message": "Token Expired"}, status=status.HTTP_400_BAD_REQUEST)
         except jwt.exceptions.DecodeError as identifier:
-            print(identifier)
             return Response({"success": False, "message": "Invalid token"}, status=status.HTTP_400_BAD_REQUEST)
+
+class EmailVerificationToken(APIView):
+
+    def post(self, request):
+        email = request.data.get('email', None)
+        if not email:
+            return Response({"success": False, "message": "Please enter a valid email"})
+        
+        try:
+            user = User.objects.get(email=email)
+        except User.DoesNotExist:
+            return Response({"success": False, "message": "User not registered"})
+        
+        if not user.email_verified:
+            current_site = settings.FRONTEND_URL
+            relativeLink = settings.FRONTEND_EMAIL_VERIFY_URL
+            
+            token = RefreshToken.for_user(user).access_token
+            absurl = 'http://'+current_site+relativeLink+str(token)+"/"
+            print(absurl)
+            email_body = 'Hi '+user.username + \
+                ' Use the link below to verify your email \n' + absurl
+            data = {'email_body': email_body, 'to_email': user.email,
+                    'email_subject': 'Verify your email'}
+
+            Util.send_email(data)
+            return Response({"success": True, "message": "Verification email sent!"})
+        
+        return Response({"success": True, "message": "Email already verified!"})
+
 
 class UserAPI(RetrieveAPIView):
   permission_classes = [

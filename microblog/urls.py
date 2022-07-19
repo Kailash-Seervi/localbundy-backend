@@ -8,6 +8,4 @@ urlpatterns = [
     path("list/", BlogPostList.as_view(), name='post_list'),
     path("like/<int:pk>/", LikeAPI.as_view(), name='post_like'),
     path("love/<int:pk>/", LoveAPI.as_view(), name='post_love'),
-    path("view/<int:pk>/", AddPostViewAPI.as_view(), name='add_post_view'),
-
 ]
