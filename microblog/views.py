@@ -100,6 +100,6 @@ class LoveAPI(APIView):
         return Response({"success": True, "message":message, "data":serializer.data})
 
 class BlogPostList(ListAPIView):
-    queryset = Post.objects.all().prefetch_related('likes', 'loves').order_by("-created_at")
+    queryset = Post.objects.prefetch_related('likes', 'loves').all().order_by("-created_at")
     serializer_class = PostListViewSerializer
     pagination_class = PostListPagination
