@@ -54,7 +54,10 @@ class VerifyEmail(APIView):
         try:
             payload = jwt.decode(token, settings.SECRET_KEY, algorithms=["HS256", "HS384", "HS512"])
             print(payload)
-            user = User.objects.get(id=payload['user_id'])
+            try:
+                user = User.objects.get(id=payload['user_id'])
+            except User.DoesNotExist:
+                return Response({"success": False, "message": "User Doesn't exist"}, status=status.HTTP_404_NOT_FOUND)
             if not user.email_verified:
                 user.email_verified = True
                 user.save()
