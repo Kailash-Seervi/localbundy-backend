@@ -72,12 +72,12 @@ class EmailVerificationToken(APIView):
     def post(self, request):
         email = request.data.get('email', None)
         if not email:
-            return Response({"success": False, "message": "Please enter a valid email"})
+            return Response({"success": False, "message": "Please enter a valid email"}, status=status.HTTP_400_BAD_REQUEST)
         
         try:
             user = User.objects.get(email=email)
         except User.DoesNotExist:
-            return Response({"success": False, "message": "User not registered"})
+            return Response({"success": False, "message": "User not registered"}, status=status.HTTP_404_NOT_FOUND)
         
         if not user.email_verified:
             current_site = settings.FRONTEND_URL
