@@ -45,7 +45,7 @@ class Signup(APIView):
 
         Util.send_email(data)
 
-        return Response({"success": True, "message": "User successfully created!"})
+        return Response({"success": True, "message": "User successfully created!. Please check your email for verification "})
 
 class VerifyEmail(APIView):
 
